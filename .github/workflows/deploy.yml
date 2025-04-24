@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci             # lockfile があるので ci が速い
+      - run: npm install            
       - run: npm run build      # => dist/ に出力 :contentReference[oaicite:2]{index=2}
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
