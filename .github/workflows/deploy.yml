@@ -1,23 +1,26 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
-    branches: [main]           # メインブランチ名
-  workflow_dispatch:           # 手動実行も可
+    branches:
+      - main
+
+permissions:
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci            
-      - run: npm run build      # => dist/ に出力 :contentReference[oaicite:2]{index=2}
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist   # Vite の出力フォルダ
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
